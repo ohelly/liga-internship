@@ -3,13 +3,10 @@ package ru.liga;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
-import ru.liga.AnalysisMidi.*;
-import ru.liga.songtask.content.Content;
-import ru.liga.songtask.domain.SimpleMidiFile;
 
 public class AppTest
 {
-    SimpleMidiFile simpleMidiFile ;
+    /*SimpleMidiFile simpleMidiFile ;
     AllNotes allNotes;
     AnalysisDiapoz analysisDiapoz;
     AnalysisInterval analysisInterval;
@@ -54,6 +51,6 @@ public class AppTest
     {
         Assertions.assertThat(analysisDuration.GetAnalysis().get(10975.6045f)).isEqualTo(15);
         Assertions.assertThat(analysisDuration.GetAnalysis().get(18658.527f)).isEqualTo(25);
-    }
+    }*/
 
 }
