@@ -4,26 +4,60 @@ import com.leff.midi.MidiFile;
 import com.leff.midi.event.MidiEvent;
 import com.leff.midi.event.NoteOff;
 import com.leff.midi.event.NoteOn;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.liga.songtask.domain.Note;
 import ru.liga.songtask.domain.NoteSign;
+
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class App {
+	private static Logger logger = LoggerFactory.getLogger(App.class);
+
     public static void main(String[] args){
+    	if (args != null) {
+			logger.debug("Программа запущена.\n Входные параметры: {}", Arrays.toString(args));
+			readParameters(args);
+		}
+    	else {
+			logger.debug("Недостаточно вводимых параметров!");
+			logger.info("Пример ввода:");
+			logger.info("\tДля Анализа: <path to file> analyze");
+			logger.info("\tДля изменения: <path to file> change -trans <value> -tempo <value>");
+		}
+    }
+
+    public static void readParameters(String[] args) {
     	try {
 			if (args[1].equals("analyze")) {
 				new Analysis(new MidiFile(new FileInputStream(args[0])));
-			} else if ((args[1].equals("change")) && (args.length == 6)) {
-				new Transpose(new MidiFile(new FileInputStream(args[0])), args);
-			} else {
-				System.out.println("Bad Arguments");
+				logger.debug("Анализ трека закончен");
 			}
-		} catch (Exception e) {
-			System.out.println("Bad Arguments");
+			else if (args[1].equals("change")
+					&& args[2].equals("-trans")
+					&& args[4].equals("-tempo")) {
+				new Transpose(new MidiFile(new FileInputStream(args[0])), args[0],
+						Integer.parseInt(args[3]),
+						Integer.parseInt(args[5]));
+				logger.debug("Изменение трека закончено");
+			}
+			else {
+				logger.info("Неверный формат ввода!");
+				logger.info("Пример ввода:");
+				logger.info("\tДля Анализа: <path to file> analyze");
+				logger.info("\tДля изменения: <path to file> change -trans <value> -tempo <value>");
+			}
+		} catch (IOException e) {
+    		logger.info("Указан неверный путь к файлу!");
+		} catch (IndexOutOfBoundsException | NumberFormatException e) {
+			logger.info("Неверный формат ввода!");
+			logger.info("Пример ввода:");
+			logger.info("\tДля Анализа: <path to file> analyze");
+			logger.info("\tДля изменения: <path to file> change -trans <value> -tempo <value>");
 		}
-    }
+	}
 
     /**
      * Этот метод, чтобы вы не афигели переводить эвенты в ноты
