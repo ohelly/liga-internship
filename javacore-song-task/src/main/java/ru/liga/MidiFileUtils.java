@@ -27,18 +27,13 @@ public class MidiFileUtils {
 				.collect(Collectors.toList()));
 	}
 
-	public static List<MidiTrack> deleteTrackNameFromTracks(List<MidiTrack> tracks) {
-		return tracks.stream()
-				.filter(track -> track.getEvents()
-						.removeIf(midiEvent -> midiEvent instanceof TrackName))
-				.collect(Collectors.toList());
-	}
-
 	public static boolean comparisonWordsBetweenNotes(TreeSet<MidiEvent> wordsEvent, List<Note> notes) {
 		ArrayList<Long> tickFromNote = new ArrayList<>();
 		ArrayList<Long> tickFromWordsEvent = new ArrayList<>();
 		notes.forEach(note -> tickFromNote.add(note.startTick()));
-		wordsEvent.forEach(event -> tickFromWordsEvent.add(event.getTick()));
+		wordsEvent.stream()
+				.filter(event -> !(event instanceof TrackName))
+				.forEach(event -> tickFromWordsEvent.add(event.getTick()));
 		return tickFromNote.equals(tickFromWordsEvent);
 	}
 

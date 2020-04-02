@@ -54,8 +54,6 @@ public class App {
     	logger.trace("Получены все треки из файла");
     	List<MidiTrack> trackWithWords = MidiFileUtils.getTracksWithWords(allTracks);
 		logger.trace("Получены треки со словами");
-    	trackWithWords = MidiFileUtils.deleteTrackNameFromTracks(trackWithWords);
-    	logger.trace("Удалены MidiEvent's типа TrackName");
     	logger.trace("Анализ треков");
     	for (MidiTrack trackWords : trackWithWords) {
     		for (MidiTrack track : allTracks) {
