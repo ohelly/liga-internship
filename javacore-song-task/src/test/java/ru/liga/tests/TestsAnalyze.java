@@ -14,7 +14,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class TestsAnalyze {
-	public List<MidiTrack> findTrackWithWords(List<MidiTrack> allTracks) {
+	/*public List<MidiTrack> findTrackWithWords(List<MidiTrack> allTracks) {
 		return correctListOfTracks(allTracks.stream()
 				.filter(track -> track.getEvents()
 						.stream()
@@ -51,5 +51,5 @@ public class TestsAnalyze {
 		wordsEvent.forEach(event -> tickFromWordsEvent.add(event.getTick()));
 
 		return tickFromNote.equals(tickFromWordsEvent);
-	}
+	}*/
 }

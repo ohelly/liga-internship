@@ -2,7 +2,6 @@ package ru.liga;
 
 import com.leff.midi.MidiFile;
 import com.leff.midi.MidiTrack;
-import lombok.ToString;
 import org.junit.Before;
 import org.junit.Test;
 import ru.liga.tests.TestTranspose;
@@ -17,7 +16,7 @@ import static org.junit.Assert.*;
 
 public class AppTest
 {
-    private static MidiFile midiFileBelle;
+   /* private static MidiFile midiFileBelle;
     private static MidiFile midiFileWreck;
     private static MidiFile midiFileUnd;
     private static TestsAnalyze testsAnalyze;
