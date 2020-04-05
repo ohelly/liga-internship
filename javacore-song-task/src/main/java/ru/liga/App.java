@@ -17,50 +17,47 @@ import java.util.*;
 public class App {
 	private static Logger logger = LoggerFactory.getLogger(App.class);
 
-    public static void main(String[] args) {
-    	if (args != null) {
+	public static void main(String[] args) {
+		if (args != null) {
 			logger.debug("Программа запущена.\n Входные параметры: {}", Arrays.toString(args));
 			readParameters(args);
-		}
-    	else {
+		} else {
 			outInvalidInputFormat();
 		}
-    }
+	}
 
-    private static void readParameters(String[] args) {
-    	try {
+	private static void readParameters(String[] args) {
+		try {
 			if (args[1].equals("analyze")) {
 				analysisTrack(new MidiFile(new FileInputStream(args[0])));
-			}
-			else if (args[1].equals("change")
+			} else if (args[1].equals("change")
 					&& args[2].equals("-trans")
 					&& args[4].equals("-tempo")) {
 				transposeTrack(new MidiFile(new FileInputStream(args[0])), args[0],
 						Integer.parseInt(args[3]),
 						Integer.parseInt(args[5]));
-			}
-			else {
+			} else {
 				outInvalidInputFormat();
 			}
 		} catch (IOException e) {
-    		logger.info("Указан неверный путь к файлу!");
+			logger.info("Указан неверный путь к файлу!");
 		} catch (IndexOutOfBoundsException | NumberFormatException e) {
 			outInvalidInputFormat();
 		}
 	}
 
 	private static void analysisTrack(MidiFile inputMidiFile) {
-    	List<MidiTrack> allTracks = inputMidiFile.getTracks();
-    	logger.trace("Получены все треки из файла");
-    	List<MidiTrack> trackWithWords = MidiFileUtils.getTracksWithWords(allTracks);
+		List<MidiTrack> allTracks = inputMidiFile.getTracks();
+		logger.trace("Получены все треки из файла");
+		List<MidiTrack> trackWithWords = MidiFileUtils.getTracksWithWords(allTracks);
 		logger.trace("Получены треки со словами");
-    	logger.trace("Анализ треков");
-    	for (MidiTrack trackWords : trackWithWords) {
-    		for (MidiTrack track : allTracks) {
-    			List<Note> list = MidiFileUtils.eventsToNotes(track.getEvents());
-    			debugLogAnalyze(allTracks, trackWithWords, trackWords, track);
-    			if (MidiFileUtils.comparisonWordsBetweenNotes(trackWords.getEvents(), list)) {
-    				logger.trace("Найден трек с мелодией");
+		logger.trace("Анализ треков");
+		for (MidiTrack trackWords : trackWithWords) {
+			for (MidiTrack track : allTracks) {
+				List<Note> list = MidiFileUtils.eventsToNotes(track.getEvents());
+				debugLogAnalyze(allTracks, trackWithWords, trackWords, track);
+				if (MidiFileUtils.comparisonWordsBetweenNotes(trackWords.getEvents(), list)) {
+					logger.trace("Найден трек с мелодией");
 					Analysis analysis = new Analysis(track, (Tempo) inputMidiFile.getTracks().get(0).getEvents().last(),
 							inputMidiFile);
 					Map<Integer, Integer> mapDuration = analysis.getMapOfDuration();
@@ -98,19 +95,19 @@ public class App {
 
 	private static void transposeTrack(MidiFile inputMidiFile, String name, int trans, int tempo) {
 		debugLogTranspose(name, trans, tempo);
-    	MidiFile newMidi = MidiFileUtils.getCopyOfMidiFile(inputMidiFile);
-    	Transpose transpose = new Transpose(newMidi);
-    	for (MidiTrack track : newMidi.getTracks()) {
+		MidiFile newMidi = MidiFileUtils.getCopyOfMidiFile(inputMidiFile);
+		Transpose transpose = new Transpose(newMidi);
+		for (MidiTrack track : newMidi.getTracks()) {
 			logger.debug("Изменение трека: {}", track.toString());
-    		for (MidiEvent event : track.getEvents()) {
-    			tryChangeEvent(transpose, event, trans);
+			for (MidiEvent event : track.getEvents()) {
+				tryChangeEvent(transpose, event, trans);
 			}
 		}
 		logger.trace("Транспонирование треков закончено");
 		logger.debug("Изменение скорости трека, значение: {}", tempo);
-    	transpose.changeSpeed(tempo);
+		transpose.changeSpeed(tempo);
 		logger.trace("Изменение скорости трека закончено");
-    	try {
+		try {
 			String nameFile = name.substring(name.lastIndexOf(File.separator) + 1, name.lastIndexOf("."));
 			File file = new File(nameFile + "-trans" + trans + "-tempo" + tempo + ".mid");
 			newMidi.writeToFile(file);
@@ -124,7 +121,7 @@ public class App {
 	}
 
 	private static void tryChangeEvent(Transpose transpose, MidiEvent event, int trans) {
-    	try {
+		try {
 			if (event instanceof NoteOn)
 				event = transpose.getChangedNoteOn((NoteOn) event, trans);
 			else if (event instanceof NoteOff)
