@@ -26,8 +26,6 @@ public class Analysis {
 		this.notesValue = notes
 				.stream().map(Note::sign).map(NoteSign::getMidi).toArray(Integer[]::new);
 		this.file = file;
-		cacheOfDurationNotes();
-		cacheOfCountNotes();
 	}
 
 	public Integer getMaxNoteValue() {
@@ -43,10 +41,14 @@ public class Analysis {
 	}
 
 	public Map<String, Integer> getMapOfCount() {
+		if (mapOfCount.size() == 0)
+			cacheOfCountNotes();
 		return mapOfCount;
 	}
 
 	public Map<Integer, Integer> getMapOfDuration() {
+		if (mapOfDuration.size() == 0)
+			cacheOfDurationNotes();
 		return mapOfDuration;
 	}
 

@@ -24,16 +24,20 @@ public class MidiFileUtilsTest {
 	private MidiTrack melodyWreck;
 
 	@Before
-	public void setUp() throws IOException {
-		midiFileBelle = new MidiFile(new FileInputStream("src/main/resources/Belle.mid"));
-		midiFileWreck = new MidiFile(new FileInputStream("src/main/resources/Wrecking Ball.mid"));
-		midiFileUnd = new MidiFile(new FileInputStream("src/main/resources/Underneath Your Clothes.mid"));
-		trackWithWordsUnd.add(midiFileUnd.getTracks().get(3));
-		trackWithWordsBelle.add(midiFileBelle.getTracks().get(3));
-		trackWithWordsWreck.add(midiFileWreck.getTracks().get(12));
-		melodyUnd = midiFileUnd.getTracks().get(2);
-		melodyWreck = midiFileWreck.getTracks().get(9);
-		melodyBelle = midiFileBelle.getTracks().get(9);
+	public void setUp() {
+		try {
+			midiFileBelle = new MidiFile(new FileInputStream("src/main/resources/Belle.mid"));
+			midiFileWreck = new MidiFile(new FileInputStream("src/main/resources/Wrecking Ball.mid"));
+			midiFileUnd = new MidiFile(new FileInputStream("src/main/resources/Underneath Your Clothes.mid"));
+			trackWithWordsUnd.add(midiFileUnd.getTracks().get(3));
+			trackWithWordsBelle.add(midiFileBelle.getTracks().get(3));
+			trackWithWordsWreck.add(midiFileWreck.getTracks().get(12));
+			melodyUnd = midiFileUnd.getTracks().get(2);
+			melodyWreck = midiFileWreck.getTracks().get(9);
+			melodyBelle = midiFileBelle.getTracks().get(9);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
